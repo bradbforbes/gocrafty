@@ -29,18 +29,6 @@ class SlideshowsAdminPage extends AdminPage
 
     ?>
 
-
-
-    <!--
-    ---------------------------------------------------------
-        Draw Courses
-    ---------------------------------------------------------
-
-        Draw all MedEd Courses with a table of options
-        for all available credit types.
-
-    ---------------------------------------------------------
-    -->
     <div class="wrap">
 
         <?php if (isset($_SESSION['goc-slideshows-message'])): ?>
@@ -50,8 +38,10 @@ class SlideshowsAdminPage extends AdminPage
         <?php unset($_SESSION['goc-slideshows-message']); ?>
         <?php endif; ?>
 
-        <div class="goc-header">Slideshows</div>
-        <div class="goc-instructions">Click a Slideshow preview to add or remove Slides.</div>
+        <div class="goc-header">
+            <div class="goc-header-title">Slideshows</div>
+            <div class="goc-header-instructions">Click a Slideshow preview to add or remove Slides.</div>
+        </div>
 
         <?php if (count($slideshows) > 0): ?>
         <?php foreach ($slideshows as $slideshow): ?>
@@ -83,8 +73,10 @@ class SlideshowsAdminPage extends AdminPage
         <div style="padding: 0 0 20px 20px;">You have not started any Slideshows yet.</div>
         <?php endif; ?>
 
-        <div class="goc-header">Add a new Slideshow</div>
-        <div class="goc-instructions">After adding a Slideshow, you can select images from your Media Library to include in it.</div>
+        <div class="goc-header">
+            <div class="goc-header-title">Add a new Slideshow</div>
+            <div class="goc-header-instructions">After adding a Slideshow, you can select images from your Media Library to include in it.</div>
+        </div>
 
         <form method="POST" action="admin.php?page=goc-slideshows">
         <div class="goc-form">

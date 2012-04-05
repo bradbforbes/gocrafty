@@ -47,50 +47,42 @@ class ManageSlideshowAdminPage extends AdminPage
 
     ?>
 
-
-    <!--
-    ---------------------------------------------------------
-        Draw Courses
-    ---------------------------------------------------------
-
-        Draw all MedEd Courses with a table of options
-        for all available credit types.
-
-    -->
     <div class="wrap">
 
-        <div class="goc-header"><?php echo $slideshow->getTitle(); ?> Slideshow</div>
-        <div class="goc-instructions">Click images to add or remove them from the Slideshow.</div>
+        <div class="goc-header">
+            <div class="goc-header-title"><?php echo $slideshow->getTitle(); ?> Slideshow</div>
+            <div class="goc-header-instructions">Click images to add or remove them from the Slideshow.</div>
+        </div>
 
-        <div id="goc-page"><div class="dress">
+        <div class="goc-content">
 
+            <!-- Check that there's something in the Media Library. -->
             <?php if (count($slides) > 0): ?>
 
                 <div class="goc-codes">
-                <div class="goc-code">[goc_display id="<?php echo $slideshow->getId(); ?>"]</div>
-                <div class="goc-code-small">[goc_display id="<?php echo $slideshow->getId(); ?>" width="600" height="350" pagination="false" fadetime="550" delay="5000" border="0"]</div>
+                    <div class="goc-codes-line">[goc_display id="<?php echo $slideshow->getId(); ?>"]</div>
+                    <div class="goc-codes-smallline">[goc_display id="<?php echo $slideshow->getId(); ?>" width="600" height="350" pagination="false" fadetime="550" delay="5000" border="0"]</div>
                 </div>
 
-            <?php $s = 0; $r = 0; $columns = 5; ?>
+            <!-- Print each image in the Media Library, decorating it if it's selected. -->
             <?php foreach ($slides as $slide): ?>
-
-                <?php if ($slideshow->hasAttachmentId($slide['id'])) { $selected = 'selected'; } else { $selected = ''; } ?>
-                <div class="goc-slide"><div id="js-goc-slide-<?php echo $slide['id']; ?>" class="dress js-goc-slide <?php echo $selected; ?> equal-height equal-height-<?php echo $r; ?>">
-                    <div class="title"><?php echo trail_off($slide['title'], 18); ?></div>
-                    <img class="image" src="<?php echo $slide['image']; ?>" />
-                </div></div>
-
-                <?php endforeach; ?>
+                <?php if ($slideshow->hasAttachmentId($slide['id'])) { $selected = 'is-selected'; } else { $selected = ''; } ?>
+                <div id="goc-slide-<?php echo $slide['id']; ?>" class="goc-slide <?php echo $selected; ?>">
+                    <div class="goc-slide-title"><?php echo trail_off($slide['title'], 18); ?></div>
+                    <img class="goc-slide-image" src="<?php echo $slide['image']; ?>" />
+                </div>
+            <?php endforeach; ?>
             <div class="clear"></div>
 
-
-
+            <!-- Print a simple form with 'Save', 'Order Slides', and 'Go back to Slideshows' options -->
             <form id="manage-slides" name="manage-slides" method="POST" action="admin.php?page=goc-manage-slideshow&slideshow_id=<?php echo $slideshowId; ?>">
                 <input type="hidden" id="manage-slides-selected" name="manage-slides-selected" value="<?php echo $slideshow->getSlideIds(); ?>" />
                 <input type="submit" class="big-submit" name="page-save-changes" value="Save" />
-                <a class="goc-order-link" href="admin.php?page=goc-manage-order&slideshow_id=<?php echo $slideshowId; ?>">Order Slides</a>
+                <input type="submit" class="big-submit-secondary" name="page-save-changes-then-order" value="Save & Order" />
                 <a class="goc-go-back" href="admin.php?page=goc-slideshows">Go back to Slideshows</a>
             </form>
+
+            <!-- Display a simple message instead if the Media Library is empty. -->
             <?php else: ?>
                 Slides are just images you've added to your WordPress Media Library.  So first go do that, then come back.
                 <form method="POST" action="media-new.php">
@@ -98,9 +90,7 @@ class ManageSlideshowAdminPage extends AdminPage
                 </form>
             <?php endif; ?>
 
-        </div></div>
-
-
+        </div>
 
     </div>
     <?php
@@ -108,7 +98,7 @@ class ManageSlideshowAdminPage extends AdminPage
 
     public function doProcess() {
 
-        if (isset($_POST['page-save-changes'])) {
+        if (isset($_POST['page-save-changes']) || isset($_POST['page-save-changes-then-order'])) {
 
             // Initialize ID of the Slideshow we're currently managing.
             $slideshowId = $_GET['slideshow_id'];
@@ -127,7 +117,12 @@ class ManageSlideshowAdminPage extends AdminPage
             $slideshow->save();
 
             // Redirect to the Slideshows main page.
-            header('Location: admin.php?page=goc-slideshows');
+            if (isset($_POST['page-save-changes'])) {
+                header('Location: admin.php?page=goc-slideshows');
+            }
+            if (isset($_POST['page-save-changes-then-order'])) {
+                header('Location: admin.php?page=goc-manage-order&slideshow_id=' . $slideshowId);
+            }
         }
     }
 }

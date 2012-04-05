@@ -34,7 +34,7 @@ function GocSlideManager($) {
 
     }
 
-    $('.js-goc-slide').click(function(){
+    $('.goc-slide').click(function(){
 
         console.log('Clicked');
 
@@ -42,7 +42,7 @@ function GocSlideManager($) {
         var elementId = $(this).attr('id');
 
         // Get the number ID of the element.
-        var selectedId = parseInt(elementId.replace('js-goc-slide-', ''));
+        var selectedId = parseInt(elementId.replace('goc-slide-', ''));
 
         // Determine where, if anywhere, this ID is in the
         // selected collection.
@@ -51,11 +51,13 @@ function GocSlideManager($) {
         // Add the ID if it is not in the collection yet.
         if (foundIndex === -1) {
             selected.push(selectedId);
-            $('#' + elementId).addClass('selected');
+            $(this).addClass('is-selected');
+            console.log($(this).attr('class'));
 
         } else {
             selected.splice(foundIndex, 1);
-            $('#' + elementId).removeClass('selected');
+            $(this).removeClass('is-selected');
+            console.log($(this).attr('class'));
         }
 
         save();

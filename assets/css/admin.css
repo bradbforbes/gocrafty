@@ -1,28 +1,19 @@
 /*
----------------------------------------------------------
-    Global
----------------------------------------------------------
-
-
-
----------------------------------------------------------
+This stylesheet follows the SMACCS guidelines.
+Visit http://smacss.com/ for mroe information.
 */
+
+
 .clear { clear: both; }
 
 
 /*
 ---------------------------------------------------------
-    Layout
----------------------------------------------------------
-
-
-
+    =Layout
 ---------------------------------------------------------
 */
-#goc-page {
-    width: 100%;
-}
-#goc-page > .dress {
+/* Wrap large content pieces */
+.goc-content {
     border: 1px solid #ddd;
     padding: 20px;
 }
@@ -30,74 +21,96 @@
 
 /*
 ---------------------------------------------------------
-    Modules
----------------------------------------------------------
-
-
-
+    =Modules
 ---------------------------------------------------------
 */
-/*.goc-slide {*/
-    /*float: left;*/
-    /*width: 18%;*/
-    /*margin-right: 1.5%;*/
-    /*margin-bottom: 10px;*/
-/*}*/
-/*.goc-slide > .dress {*/
-    /*border: 1px solid #ddd;*/
-    /*padding: 10px;*/
-/*}*/
-/*.goc-slide > .dress:hover { border: 1px solid #aaa; }*/
-/*.goc-slide > .selected {*/
-    /*color: #fff;*/
-    /*background: #2591ff;*/
-    /*border: 1px solid #aaa; -webkit-box-shadow: 3px 3px 6px rgba(50, 50, 50, 0.25);*/
-    /*-moz-box-shadow:    3px 3px 6px rgba(50, 50, 50, 0.25);*/
-    /*box-shadow:         3px 3px 6px rgba(50, 50, 50, 0.25); }*/
-/*.goc-slide .title {*/
-    /*padding: 0 10px 10px 0;*/
-    /*font-family: arial;*/
-    /*font-size: 17px;*/
-    /*font-weight: 400;*/
-/*}*/
-/*.goc-slide .details {*/
-    /*padding: 0 10px 10px 0;*/
-    /*font-family: arial;*/
-    /*font-size: 14px;*/
-    /*font-weight: 400;*/
-    /*color: #777;*/
-/*}*/
-/*.goc-slide .image {*/
-    /*max-width: 100%;*/
-/*}*/
 
+/*
+    goc-header
+
+    Includes a title and some 'instructions' for a large
+    content area of a page.
+*/
+.goc-header {
+    margin: 20px 0 15px 0;
+}
+.goc-header-title {
+    padding: 0 0 15px 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #2591ff;
+}
+.goc-header-instructions {
+    font-size: 13px;
+    color: #777;
+}
+/*  eo goc-header
+--------------------------------------------------------- */
+
+
+/*
+    goc-slide
+
+    A container for a slide thumbnail.  It includes both
+    a small title and a thumbnail image.
+
+    These can be 'selected', and are sortable sometimes.
+*/
 .goc-slide {
     float: left;
     margin-right: 5px;
     margin-bottom: 10px;
-}
-.goc-slide > .dress {
     border: 1px solid #ddd;
     padding: 10px;
 }
-.goc-slide > .dress:hover { border: 1px solid #aaa; }
-.goc-slide > .selected {
-    color: #fff;
-    background: #2591ff;
-    border: 1px solid #aaa; -webkit-box-shadow: 3px 3px 6px rgba(50, 50, 50, 0.25);
-    -moz-box-shadow:    3px 3px 6px rgba(50, 50, 50, 0.25);
-    box-shadow:         3px 3px 6px rgba(50, 50, 50, 0.25); }
-.goc-slide .title {
+.goc-slide-title {
     padding: 0 5px 5px 0;
     font-family: arial;
     font-size: 13px;
     font-weight: 400;
     text-align: center;
 }
-.goc-slide .image {
+.goc-slide-image {
     width: 150px;
     height: 150px;
 }
+    /* States */
+    .goc-slide:hover { border: 1px solid #aaa; }
+    .is-selected {
+        color: #fff;
+        background: #2591ff;
+        border: 1px solid #aaa; -webkit-box-shadow: 3px 3px 6px rgba(50, 50, 50, 0.25);
+        -moz-box-shadow:    3px 3px 6px rgba(50, 50, 50, 0.25);
+        box-shadow:         3px 3px 6px rgba(50, 50, 50, 0.25);
+    }
+/*  eo goc-slide
+--------------------------------------------------------- */
+
+
+/*
+    goc-codes
+
+    A simple container to display shortcodes.
+*/
+.goc-codes {
+    margin: 0 0 20px 0;
+    border: 1px dashed #666;
+    padding: 10px 20px 0 20px;
+}
+.goc-codes-line {
+    padding: 0 0 10px 0;
+    font-family: 'consolas', 'courier new', sans-serif;
+    font-size: 16px;
+}
+.goc-codes-smallline {
+    padding: 0 0 10px 0;
+    font-family: 'consolas', 'courier new', sans-serif;
+    font-size: 13px;
+}
+/* eo goc-codes
+--------------------------------------------------------- */
+
+
 
 .goc-slideshow-link { text-decoration: none; }
 
@@ -159,35 +172,8 @@
 
 ---------------------------------------------------------
 */
-.goc-header {
-    padding: 20px 0px 15px 0;
-    font-size: 19px;
-    font-weight: 700;
-    color: #2591ff;
-}
-.goc-instructions {
-    margin: 0 0 15px 0;
-    font-size: 13px;
-    color: #777;
-}
 
-.goc-codes {
-    margin: 0 0 10px 0;
-    border: 1px dashed #666;
-    padding: 10px 20px;
-}
 
-.goc-code {
-    padding: 5px 0;
-    font-family: 'consolas', 'courier new', sans-serif;
-    font-size: 16px;
-}
-
-.goc-code-small {
-    padding: 5px 0;
-    font-family: 'consolas', 'courier new', sans-serif;
-    font-size: 13px;
-}
 
 .goc-order-link {
     background-color: #999 !important;
@@ -217,6 +203,19 @@
 }
 .big-submit:hover {
     background-color: #127BE6 !important;
+}
+.big-submit-secondary {
+    background-color: #888 !important;
+    border: 0 !important;
+    margin: 10px 0 0 0;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff !important;
+    cursor: pointer;background-color: #888 !important;
+}
+.big-submit-secondary:hover {
+    background-color: #777 !important;
 }
 
 .goc-go-back {

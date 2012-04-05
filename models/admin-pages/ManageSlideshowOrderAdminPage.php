@@ -21,77 +21,75 @@ class ManageSlideshowOrderAdminPage extends AdminPage
         $slides = $slideshow->getSlides();
 
 
-
     ?>
 
-    <style>
-        #sortable { list-style-type: none; margin: 0; padding: 0; }
-        #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
-    </style>
-
-
     <!--
-    ---------------------------------------------------------
-        Draw Courses
-    ---------------------------------------------------------
+        Handle Sortable Slides.
 
-        Draw all MedEd Courses with a table of options
-        for all available credit types.
-
+        A comma-separate list of order is saved to
+        the hidden field 'goc-sortable-order' whenever
+        the user does any sorting.
     -->
+    <script>
+        jQuery(document).ready(function($){
 
+            console.log($('#goc-sortable-order').val());
+
+            $( "#sortable" ).sortable({
+                update: function(event, ui) { saveOrder(event, ui); }
+            });
+            $( "#sortable" ).disableSelection();
+
+            function saveOrder(event) {
+                var order = $('#sortable').sortable('toArray');
+                order = order.toString();
+                order = order.replace(/sortable-slide-/g, '');
+                $('#goc-sortable-order').val(order);
+            }
+        });
+    </script>
+
+    <!-- Define some simple formatting of the sortable items -->
+    <style>
+        #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; }
+    </style>
 
 
     <div class="wrap">
 
-        <div class="goc-header"><?php echo $slideshow->getTitle(); ?> Slideshow</div>
-        <div class="goc-instructions">Click images to add or remove them from the Slideshow.</div>
+        <div class="goc-header">
+            <div class="goc-header-title"><?php echo $slideshow->getTitle(); ?> Slideshow</div>
+            <div class="goc-header-instructions">Click and drag Slides around to reorder them.</div>
+        </div>
 
-        <style>
-            #sortable { list-style-type: none; margin: 0; padding: 0; }
-            #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
-        </style>
-        <script>
-            jQuery(document).ready(function($){
-                $( "#sortable" ).sortable({
-                    update: function(event, ui) { saveOrder(event, ui); }
-                });
-                $( "#sortable" ).disableSelection();
 
-                function saveOrder(event) {
-                    var order = $('#sortable').sortable('toArray');
-                    order = order.toString();
-                    order = order.replace(/sortable-slide-/g, '');
-                    $('#goc-sortable-order').val(order);
-                }
-            });
-        </script>
 
-        <div id="goc-page"><div class="dress">
+        <div class="goc-content">
 
+            <!-- Check that this Slideshow has some slides. -->
             <?php if (count($slides) > 0): ?>
 
             <ul id="sortable">
-            <?php foreach ($slides as $slide): ?>
-                <li id="sortable-slide-<?php echo $slide->getAttachmentId(); ?>" class="ui-state-default" style="width: 175px; height: 200px;">
-                <?php $image = wp_get_attachment_image_src($slide->getAttachmentId(), 'thumbnail'); $src = $image[0]; ?>
-                <div class="goc-slide"><div id="js-goc-slide-<?php echo $slide->getId(); ?>" class="dress js-goc-slide selected">
-                    <div class="title"><?php echo trail_off(get_the_title($slide->getAttachmentId()), 18); ?></div>
-                    <img class="image" src="<?php echo $src; ?>" />
-                </div></div>
-                </li>
-            <?php endforeach; ?>
-
+                <?php foreach ($slides as $slide): ?>
+                    <li id="sortable-slide-<?php echo $slide->getAttachmentId(); ?>" class="ui-state-default" style="width: 175px; height: 200px;">
+                        <?php $image = wp_get_attachment_image_src($slide->getAttachmentId(), 'thumbnail'); $src = $image[0]; ?>
+                        <div id="goc-slide-<?php echo $slide->getId(); ?>" class="goc-slide is-selected">
+                            <div class="goc-slide-title"><?php echo trail_off(get_the_title($slide->getAttachmentId()), 18); ?></div>
+                            <img class="goc-slide-image" src="<?php echo $src; ?>" />
+                        </div>
+                    </li>
+                <?php endforeach; ?>
             </ul>
             <div class="clear"></div>
 
-
-
+            <!-- Print a simple form with 'Save' and 'Go back to Slideshows' options. -->
             <form id="manage-slides" name="manage-slides" method="POST" action="admin.php?page=goc-manage-order&slideshow_id=<?php echo $slideshowId; ?>">
-                <input type="hidden" id="goc-sortable-order" name="goc-sortable-order" value="1" />
+                <input type="hidden" id="goc-sortable-order" name="goc-sortable-order" value="<?php echo $slideshow->getSlideIds(); ?>" />
                 <input type="submit" class="big-submit" name="page-save-order-changes" value="Save" />
                 <a class="goc-go-back" href="admin.php?page=goc-slideshows">Go back to Slideshows</a>
             </form>
+
+            <!-- Display a simple message if this Slideshow has no slides yet. -->
             <?php else: ?>
                 Slides are just images you've added to your WordPress Media Library.  So first go do that, then come back.
                 <form method="POST" action="media-new.php">
@@ -100,7 +98,7 @@ class ManageSlideshowOrderAdminPage extends AdminPage
                 </form>
             <?php endif; ?>
 
-        </div></div>
+        </div>
 
 
 
