@@ -28,6 +28,7 @@ class ManageSlideshowAdminPage extends AdminPage
             array(
                 'numberposts' => -1,
                 'post_type' => 'attachment',
+                'post_mime_type' =>'image', // Don't show anything other than images as options for adding to the slideshow - McFarland, 4/13/2012
                 'orderby' => 'post_title'
             )
         );
